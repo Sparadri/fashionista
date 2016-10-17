@@ -11,10 +11,48 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161017092359) do
+ActiveRecord::Schema.define(version: 20161017103952) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "categories", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "items", force: :cascade do |t|
+    t.integer  "story_id"
+    t.integer  "category_id"
+    t.integer  "store_id"
+    t.string   "name"
+    t.string   "picture"
+    t.float    "price"
+    t.string   "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "items", ["category_id"], name: "index_items_on_category_id", using: :btree
+  add_index "items", ["store_id"], name: "index_items_on_store_id", using: :btree
+  add_index "items", ["story_id"], name: "index_items_on_story_id", using: :btree
+
+  create_table "stores", force: :cascade do |t|
+    t.string   "name"
+    t.string   "url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "stories", force: :cascade do |t|
+    t.string   "name"
+    t.string   "title"
+    t.string   "subtitle"
+    t.string   "bio"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -34,4 +72,7 @@ ActiveRecord::Schema.define(version: 20161017092359) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "items", "categories"
+  add_foreign_key "items", "stores"
+  add_foreign_key "items", "stories"
 end

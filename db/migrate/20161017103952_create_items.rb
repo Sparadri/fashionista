@@ -5,6 +5,7 @@ class CreateItems < ActiveRecord::Migration
       t.references :category, index: true, foreign_key: true
       t.references :store, index: true, foreign_key: true
       t.string :name
+      t.string :picture
       t.float :price
       t.string :description
 
